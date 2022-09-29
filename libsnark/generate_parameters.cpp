@@ -124,7 +124,7 @@ int generate_paramaters(
 
 int main(int argc, const char * argv[])
 {
-  int log2_d_4753 = 20, log2_d_6753 = 15;
+  int log2_d_4753 = 15, log2_d_6753 = 15;
   if (argc > 1) {
     std::string fastflag(argv[1]);
     if (fastflag == "fast") {

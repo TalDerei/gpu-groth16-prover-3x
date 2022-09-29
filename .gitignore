@@ -6,3 +6,5 @@ build
 main
 generate_parameters
 cuda_prover_piecewise
+	MNT4753-output
+	MNT4753-output_cuda

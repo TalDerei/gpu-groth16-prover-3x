@@ -157,6 +157,12 @@ void run_prover(
 
     const var *w = w_.get();
 
+    // Do calculations relating to H on CPU after having set the GPU in motion
+    auto H = B::params_H(params);
+    auto coefficients_for_H = compute_H<B>(d, B::input_ca(inputs), B::input_cb(inputs), B::input_cc(inputs));
+
+    print_time(t, "cpu 1");
+
     auto t_gpu = t;
 
     cudaStream_t sA, sB1, sB2, sL;
@@ -168,17 +174,9 @@ void run_prover(
     print_time(t, "gpu launch");
 
     G1 *evaluation_At = B::multiexp_G1(B::input_w(inputs), B::params_A(params), m + 1);
+    G1 *evaluation_Ht = B::multiexp_G1(coefficients_for_H, H, d);
     //G1 *evaluation_Bt1 = B::multiexp_G1(B::input_w(inputs), B::params_B1(params), m + 1);
     //G2 *evaluation_Bt2 = B::multiexp_G2(B::input_w(inputs), B::params_B2(params), m + 1);
-
-    // Do calculations relating to H on CPU after having set the GPU in
-    // motion
-    auto H = B::params_H(params);
-    auto coefficients_for_H =
-        compute_H<B>(d, B::input_ca(inputs), B::input_cb(inputs), B::input_cc(inputs));
-    G1 *evaluation_Ht = B::multiexp_G1(coefficients_for_H, H, d);
-
-    print_time(t, "cpu 1");
 
     cudaDeviceSynchronize();
     //cudaStreamSynchronize(sA);
@@ -206,6 +204,7 @@ void run_prover(
     print_time(t, "store");
 
     print_time(t_main, "Total time from input to output: ");
+    exit(0);
 
     //cudaStreamDestroy(sA);
     cudaStreamDestroy(sB1);

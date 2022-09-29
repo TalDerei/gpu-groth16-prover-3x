@@ -28,6 +28,8 @@ public:
   struct vector_G2;
 
   static void init_public_params();
+  
+  // void print_time(T &t1, const char *str);
 
   static void print_G1(G1 *a);
   static void print_G1(vector_G1 *a);
